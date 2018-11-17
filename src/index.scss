@@ -1,3 +1,5 @@
+@import './constants/color';
+
 body {
   margin: 0;
   padding: 0;
@@ -11,15 +13,11 @@ body {
 #root {
   width: 100%;
   height: 100%;
-  background: url('./assets/images/marketing.png') no-repeat center;
-  background-size: 75% 80%;
+  display: flex;
 
   & > div {
     display: flex;
     flex: 1;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
   }
 }
 
@@ -34,3 +32,9 @@ body {
     background-size: cover;
   }
 }
+
+// ############## GLOBAL STYLE ############## //
+.input-icon {
+  color: $icon-input-color;
+}
+// ########### END OF GLOBAL STYLE ########## //
