@@ -3,24 +3,81 @@ import {
   Form,
   Input,
   Icon,
-  Button
+  Button,
+  notification
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import firebase from '../../utils/firebase';
 
 import './index.scss';
 
 const FormItem = Form.Item;
 
 class RegisterForm extends React.Component {
-  handleSubmit = () => { }
+  state = {
+    confirmPassword: false
+  };
+
+  onSubmit = (e) => {
+    const { form } = this.props;
+    e.preventDefault();
+
+    form.validateFieldsAndScroll(async (formError, values) => {
+      if (!formError) {
+        const { email, password } = values;
+
+        try {
+          const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+          await user.user.sendEmailVerification();
+        } catch (error) {
+          const { code, message } = error;
+
+          if (code) {
+            notification.warning({
+              message: 'Warning!',
+              description: message
+            });
+          }
+        }
+      }
+    });
+  }
+
+  onConfirmBlur = (e) => {
+    const { value } = e.target;
+    const { confirmPassword } = this.state;
+
+    this.setState({ confirmPassword: confirmPassword || !!value });
+  }
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+
+  validateConfirmPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    const { confirmPassword } = this.state;
+
+    if (value && confirmPassword) {
+      form.validateFields(['confirm'], { force: true });
+    }
+
+    callback();
+  }
 
   render() {
     const { form: { getFieldDecorator } } = this.props;
 
     return (
       <div id="form-register">
-        <Form onSubmit={this.handleSubmit} className="form-register">
+        <Form onSubmit={this.onSubmit} className="form-register">
           <div id="form-input-register">
             <FormItem>
               {getFieldDecorator('email', {
@@ -38,7 +95,7 @@ class RegisterForm extends React.Component {
               )}
             </FormItem>
             <FormItem>
-              {getFieldDecorator('Full name', {
+              {getFieldDecorator('fullname', {
                 rules: [{ required: true, message: 'Please input your name!' }]
               })(
                 <Input
@@ -50,7 +107,11 @@ class RegisterForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your password!' }]
+                rules: [
+                  { required: true, message: 'Please input your password!' },
+                  { validator: this.validateConfirmPassword },
+                  { min: 6 }
+                ]
               })(
                 <Input
                   prefix={<Icon type="lock" className="input-icon" />}
@@ -63,7 +124,11 @@ class RegisterForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('confirm', {
-                rules: [{ required: true, message: 'Please confirm your password!' }]
+                rules: [
+                  { required: true, message: 'Please confirm your password!' },
+                  { validator: this.compareToFirstPassword },
+                  { min: 6 }
+                ]
               })(
                 <Input
                   prefix={<Icon type="lock" className="input-icon" />}
@@ -71,6 +136,7 @@ class RegisterForm extends React.Component {
                   autoComplete="off"
                   placeholder="Confirm Password"
                   size="large"
+                  onBlur={this.onConfirmBlur}
                 />
               )}
             </FormItem>
@@ -78,7 +144,7 @@ class RegisterForm extends React.Component {
           <FormItem>
             <Button
               type="primary"
-              htmlType="button"
+              htmlType="submit"
               className="register-form-button"
               size="large"
               block

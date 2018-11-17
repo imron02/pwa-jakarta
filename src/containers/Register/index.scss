@@ -1,4 +1,4 @@
-@import '../../constants/color';
+@import '../../utils/color';
 
 #form-register {
   display: flex;
@@ -61,8 +61,11 @@
     }
   }
 
-
   .register-form-button {
     margin-top: 14px;
+  }
+
+  .has-error .ant-form-explain {
+    margin-left: 12px;
   }
 }
