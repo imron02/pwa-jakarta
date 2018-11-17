@@ -1,0 +1,62 @@
+@import '../../constants/color';
+
+#form-login {
+  display: flex;
+  justify-content: center;
+
+  .login-form {
+    width: 350px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: $white-color;
+  }
+
+  .login-form-button {
+    margin-top: 14px;
+    width: 100%;
+  }
+
+  .signup-link {
+    display: flex;
+    justify-content: space-around;
+
+    a {
+      color: $silver-chalice-color;
+      text-decoration: underline;
+    }
+  }
+
+  .has-error .ant-form-explain {
+    margin-left: 12px;
+  }
+}
+
+#form-input-login {
+  border: 6px $athens-gray-color solid;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: $white-color;
+
+  .ant-row.ant-form-item {
+    margin-bottom: 0;
+  }
+  
+  .ant-input {
+    border-width: 0px;
+
+    &:hover {
+      border-right-width: 0px !important;
+    }
+
+    &:focus {
+      outline: none;
+      border-right-width: 0px !important;
+      box-shadow: none;
+    }
+  }
+
+  #email {
+    border-bottom: 1px solid $athens-gray-color;
+  }
+}
+
