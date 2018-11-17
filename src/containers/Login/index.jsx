@@ -3,9 +3,9 @@ import {
   Form,
   Icon,
   Input,
-  Checkbox,
   Button
 } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import './index.scss';
@@ -24,10 +24,14 @@ class NormalLoginForm extends React.Component {
           <div id="form-input-login">
             <FormItem>
               {getFieldDecorator('email', {
-                rules: [{ required: true, message: 'Please input your email!' }]
+                rules: [
+                  { required: true, message: 'Please input your E-mail!' },
+                  { type: 'email', message: 'The input is not valid E-mail!' }
+                ]
               })(
                 <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  prefix={<Icon type="mail" className="input-icon" />}
+                  type="email"
                   placeholder="Email"
                   size="large"
                 />,
@@ -38,7 +42,7 @@ class NormalLoginForm extends React.Component {
                 rules: [{ required: true, message: 'Please input your password!' }]
               })(
                 <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  prefix={<Icon type="lock" className="input-icon" />}
                   type="password"
                   autoComplete="off"
                   placeholder="Password"
@@ -57,7 +61,7 @@ class NormalLoginForm extends React.Component {
               Log in
             </Button>
             <div className="signup-link">
-              <a href="#">Sign Up</a>
+              <Link to="/register">Sign Up</Link>
               <a href="#">Forgot Password?</a>
             </div>
           </FormItem>
