@@ -8,31 +8,39 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import firebase from '../../utils/firebase';
+import isMobilePhone from 'validator/lib/isMobilePhone';
+import isEmpty from 'validator/lib/isEmpty';
 
+import { firebase, db } from '../../utils/firebase';
+import { FORMAT_USER_DATA } from '../../utils/helpers';
 import './index.scss';
 
 const FormItem = Form.Item;
 
 class RegisterForm extends React.Component {
   state = {
-    confirmPassword: false
+    confirmPassword: false,
+    onSubmit: false
   };
 
   onSubmit = (e) => {
     const { form } = this.props;
     e.preventDefault();
 
+    this.setState({ onSubmit: true });
     form.validateFieldsAndScroll(async (formError, values) => {
       if (!formError) {
         const { email, password } = values;
 
         try {
-          const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
-          await user.user.sendEmailVerification();
+          const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+          await response.user.sendEmailVerification();
+
+          this.insertData(FORMAT_USER_DATA(values));
         } catch (error) {
           const { code, message } = error;
 
+          this.setState({ onSubmit: false });
           if (code) {
             notification.warning({
               message: 'Warning!',
@@ -42,6 +50,26 @@ class RegisterForm extends React.Component {
         }
       }
     });
+  }
+
+  insertData = async (data) => {
+    const { history } = this.props;
+
+    try {
+      await db.collection('users').add(data);
+
+      this.setState({ onSubmit: false });
+      notification.success({
+        message: 'Success register',
+        description: 'Congratulations, you have successfully registered. Please login to enter the application',
+        duration: 1,
+        onClose: () => {
+          history.push('/');
+        }
+      });
+    } catch (error) {
+      // Error
+    }
   }
 
   onConfirmBlur = (e) => {
@@ -54,8 +82,20 @@ class RegisterForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
 
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+    if (value.length < 6) {
+      callback('Password konfirmasi minimal 6 karakter!');
+    } else if (value && value !== form.getFieldValue('password')) {
+      callback('Dua password yang Kamu masukkan tidak konsisten!');
+    } else {
+      callback();
+    }
+  }
+
+  validatePhoneNumber = (rule, value, callback) => {
+    if (isEmpty(value)) {
+      callback('Silahkan masukkan nomor telepon!');
+    } else if (!isMobilePhone(value, 'id-ID')) {
+      callback('Yang Kamu masukkan bukan nomor telepon yang valid!');
     } else {
       callback();
     }
@@ -74,6 +114,7 @@ class RegisterForm extends React.Component {
 
   render() {
     const { form: { getFieldDecorator } } = this.props;
+    const { onSubmit } = this.state;
 
     return (
       <div id="form-register">
@@ -82,8 +123,8 @@ class RegisterForm extends React.Component {
             <FormItem>
               {getFieldDecorator('email', {
                 rules: [
-                  { required: true, message: 'Please input your E-mail!' },
-                  { type: 'email', message: 'The input is not valid E-mail!' }
+                  { required: true, message: 'Silakan masukkan E-mail Kamu!' },
+                  { type: 'email', message: 'Yang kamu masukkan bukan E-mail yang valid!' }
                 ]
               })(
                 <Input
@@ -96,11 +137,24 @@ class RegisterForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('fullname', {
-                rules: [{ required: true, message: 'Please input your name!' }]
+                rules: [{ required: true, message: 'Silahkan masukkan nama lengkap kamu!' }]
               })(
                 <Input
                   prefix={<Icon type="user" className="input-icon" />}
-                  placeholder="Full name"
+                  placeholder="Nama Lengkap"
+                  size="large"
+                />
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('phone', {
+                rules: [
+                  { validator: this.validatePhoneNumber }
+                ]
+              })(
+                <Input
+                  prefix={<Icon type="phone" className="input-icon" />}
+                  placeholder="Nomor Telepon"
                   size="large"
                 />
               )}
@@ -108,7 +162,7 @@ class RegisterForm extends React.Component {
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [
-                  { required: true, message: 'Please input your password!' },
+                  { required: true, message: 'Silahkan masukkan password kamu!' },
                   { validator: this.validateConfirmPassword },
                   { min: 6 }
                 ]
@@ -125,16 +179,15 @@ class RegisterForm extends React.Component {
             <FormItem>
               {getFieldDecorator('confirm', {
                 rules: [
-                  { required: true, message: 'Please confirm your password!' },
-                  { validator: this.compareToFirstPassword },
-                  { min: 6 }
+                  { required: true, message: 'Silahkan konfirmasi password kamu!' },
+                  { validator: this.compareToFirstPassword }
                 ]
               })(
                 <Input
                   prefix={<Icon type="lock" className="input-icon" />}
                   type="password"
                   autoComplete="off"
-                  placeholder="Confirm Password"
+                  placeholder="Konfirmasi Password"
                   size="large"
                   onBlur={this.onConfirmBlur}
                 />
@@ -147,12 +200,13 @@ class RegisterForm extends React.Component {
               htmlType="submit"
               className="register-form-button"
               size="large"
+              loading={onSubmit}
               block
             >
-              Log in
+              Daftar
             </Button>
             <div className="login-link">
-              Already have account? <Link to="/">Log In</Link>
+              Sudah punya akun? <Link to="/">Masuk</Link>
             </div>
           </FormItem>
         </Form>
