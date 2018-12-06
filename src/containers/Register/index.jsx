@@ -123,7 +123,7 @@ class RegisterForm extends React.Component {
             <FormItem>
               {getFieldDecorator('email', {
                 rules: [
-                  { required: true, message: 'Silakan masukkan E-mail Kamu!' },
+                  { required: true, message: 'Silakan masukkan E-mail kamu!' },
                   { type: 'email', message: 'Yang kamu masukkan bukan E-mail yang valid!' }
                 ]
               })(
