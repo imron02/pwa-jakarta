@@ -7,8 +7,12 @@ const FIREBASE_CONFIG = {
   messagingSenderId: '284832732690'
 };
 const SECRET_KEY = 'pw4-j4k4rt4-s3cr3t';
+const ERROR_CODE = {
+  'auth/user-not-found': 'auth/user-not-found'
+};
 
 export {
   FIREBASE_CONFIG,
-  SECRET_KEY
+  SECRET_KEY,
+  ERROR_CODE
 };
