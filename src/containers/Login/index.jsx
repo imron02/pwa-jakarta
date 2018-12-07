@@ -6,7 +6,7 @@ import {
   Button,
   notification
 } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { firebase } from '../../utils/firebase';
@@ -17,11 +17,12 @@ const FormItem = Form.Item;
 
 class NormalLoginForm extends React.Component {
   state = {
-    onSubmit: false
+    onSubmit: false,
+    isLoggedIn: false
   };
 
   onSubmit = (e) => {
-    const { form, history } = this.props;
+    const { form } = this.props;
     e.preventDefault();
 
     this.setState({ onSubmit: true });
@@ -31,7 +32,7 @@ class NormalLoginForm extends React.Component {
           const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
           this.setState({ onSubmit: false });
           if (user.emailVerified) {
-            history.push('/register');
+            this.setState({ isLoggedIn: true });
           } else {
             notification.warning({
               message: 'Warning!',
@@ -53,7 +54,11 @@ class NormalLoginForm extends React.Component {
 
   render() {
     const { form: { getFieldDecorator } } = this.props;
-    const { onSubmit } = this.state;
+    const { onSubmit, isLoggedIn } = this.state;
+
+    if (isLoggedIn) {
+      return <Redirect to="/dashboard" />;
+    }
 
     return (
       <div id="form-login">
@@ -113,8 +118,7 @@ class NormalLoginForm extends React.Component {
 }
 
 NormalLoginForm.propTypes = {
-  form: PropTypes.objectOf(PropTypes.func).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired
+  form: PropTypes.objectOf(PropTypes.func).isRequired
 };
 
 export default Form.create()(NormalLoginForm);
