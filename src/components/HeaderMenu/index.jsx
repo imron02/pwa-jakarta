@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 
+import userImage from '../../assets/images/user.png';
 import './index.scss';
 
 const { Header } = Layout;
@@ -10,7 +11,9 @@ class HeaderMenu extends Component {
   state = {}
 
   renderSubMenu = () => (
-    <div className="submenu-title-wrapper" />
+    <div className="submenu-title-wrapper">
+      <img src={userImage} alt="user menu" className="logo-user-submenu" />
+    </div>
   );
 
   render() {
