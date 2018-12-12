@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd';
 import { Redirect } from 'react-router-dom';
 
 import userImage from '../../assets/images/user.png';
+import logo from '../../assets/images/logo.png';
 import { firebase } from '../../utils/firebase';
 import './index.scss';
 
@@ -39,7 +40,9 @@ class HeaderMenu extends Component {
 
     return (
       <Header className="header">
-        <div className="logo" />
+        <div className="logo">
+          <img src={logo} alt="logo-jakarta" />
+        </div>
         <Menu
           mode="horizontal"
           theme="dark"

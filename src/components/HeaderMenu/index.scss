@@ -4,9 +4,15 @@
   .logo {
     width: 120px;
     height: 31px;
-    background: $white-color;
-    margin: 16px 28px 16px 0;
+    margin: 16px 28px 16px -24px;
     float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 120px;
+    }
   }
 
   .submenu-title-wrapper {
