@@ -10,9 +10,20 @@ const SECRET_KEY = 'pw4-j4k4rt4-s3cr3t';
 const ERROR_CODE = {
   'auth/user-not-found': 'auth/user-not-found'
 };
+const REDUX = {
+  REQUEST_MUSEUM: 'REQUEST_MUSEUM',
+  REQUEST_MUSEUM_SUCCESS: 'REQUEST_MUSEUM_SUCCESS',
+  REQUEST_MUSEUM_FAILED: 'REQUEST_MUSEUM_FAILED'
+};
+const MENU = {
+  DASHBOARD: 1,
+  MUSEUM: 2
+};
 
 export {
   FIREBASE_CONFIG,
   SECRET_KEY,
-  ERROR_CODE
+  ERROR_CODE,
+  REDUX,
+  MENU
 };
