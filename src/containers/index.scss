@@ -1,0 +1,12 @@
+@import '../utils/color.scss';
+
+.base-container {
+  padding: 0 24px 24px;
+
+  .content-layout {
+    margin: 24px 16px;
+    padding: 24px;
+    background-color: $white-color;
+    min-height: 280;
+  }
+}
