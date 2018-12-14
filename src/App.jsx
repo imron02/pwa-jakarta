@@ -5,12 +5,16 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import 'antd/dist/antd.css';
 
 import { firebase } from './utils/firebase';
+import { MENU } from './utils/constants';
+import store from './utils/store';
 import NormalLoginForm from './containers/Login';
 import RegisterForm from './containers/Register';
 import Dashboard from './containers/Dashboard';
+import Museum from './containers/Museum/container';
 
 import './app.scss';
 import pwaImage from './assets/images/pwa.png';
@@ -74,16 +78,19 @@ class App extends React.Component {
     if (loading) { return this.renderLoader(); }
 
     return (
-      <Router>
-        <div>
-          <Switch>
-            <PublicRoute exact authed={isLoggedIn} path="/" component={NormalLoginForm} />
-            <PublicRoute authed={isLoggedIn} path="/login" component={NormalLoginForm} />
-            <PublicRoute authed={isLoggedIn} path="/register" component={RegisterForm} />
-            <PrivateRoute authed={isLoggedIn} path="/dashboard" component={Dashboard} />
-          </Switch>
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Switch>
+              <PublicRoute exact authed={isLoggedIn} path="/" component={NormalLoginForm} />
+              <PublicRoute authed={isLoggedIn} path={MENU.LOGIN} component={NormalLoginForm} />
+              <PublicRoute authed={isLoggedIn} path={MENU.REGISTER} component={RegisterForm} />
+              <PrivateRoute authed={isLoggedIn} path={MENU.DASHBOARD} component={Dashboard} />
+              <PrivateRoute authed={isLoggedIn} path={MENU.MUSEUM} component={Museum} />
+            </Switch>
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
