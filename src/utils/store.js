@@ -1,4 +1,5 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 import museum from '../containers/Museum/reducer';
@@ -7,4 +8,7 @@ const reducers = combineReducers({
   museum
 });
 
-export default createStore(reducers, applyMiddleware(logger));
+export default createStore(reducers, applyMiddleware(
+  thunk,
+  logger
+));
