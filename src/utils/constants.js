@@ -16,14 +16,18 @@ const REDUX = {
   REQUEST_MUSEUM_FAILED: 'REQUEST_MUSEUM_FAILED'
 };
 const MENU = {
-  DASHBOARD: 1,
-  MUSEUM: 2
+  LOGIN: '/login',
+  REGISTER: '/register',
+  DASHBOARD: '/dashboard',
+  MUSEUM: '/museum'
 };
+const SECRET_AUTH = 'NMWk70BR+6zuyw3NWi8uijU2jdACuEsA+kjvTaI0TXgx1e7o95cSyP1jKcKsHex5';
 
 export {
   FIREBASE_CONFIG,
   SECRET_KEY,
   ERROR_CODE,
   REDUX,
-  MENU
+  MENU,
+  SECRET_AUTH
 };
