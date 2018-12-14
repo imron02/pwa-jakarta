@@ -9,4 +9,30 @@
     background-color: $white-color;
     min-height: 280;
   }
+
+  .avatar-logo {
+    float: left;
+    margin: 10px;
+  }
+
+  article {
+    p {
+      text-align: justify;
+      color: $black-color;
+
+      span {
+        font-size: 75px;
+        float: left;
+        line-height: 60px;
+        font-family: Georgia;
+        padding-top: 3px;
+        padding-right: 8px;
+        padding-left: 3px;
+      }
+    }
+  }
+
+  .content {
+    clear: both;
+  }
 }
