@@ -8,7 +8,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <BaseContainer>
+      <BaseContainer {...this.props}>
         <h1>Selamat datang di aplikasi smart city Jakata</h1>
       </BaseContainer>
     );
