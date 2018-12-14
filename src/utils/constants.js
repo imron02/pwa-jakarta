@@ -7,8 +7,12 @@ const FIREBASE_CONFIG = {
   messagingSenderId: '284832732690'
 };
 const SECRET_KEY = 'pw4-j4k4rt4-s3cr3t';
+const SECRET_AUTH = 'NMWk70BR+6zuyw3NWi8uijU2jdACuEsA+kjvTaI0TXgx1e7o95cSyP1jKcKsHex5';
 const ERROR_CODE = {
   'auth/user-not-found': 'auth/user-not-found'
+};
+const RESPONSE_CODE = {
+  success: 'success'
 };
 const REDUX = {
   REQUEST_MUSEUM: 'REQUEST_MUSEUM',
@@ -21,7 +25,6 @@ const MENU = {
   DASHBOARD: '/dashboard',
   MUSEUM: '/museum'
 };
-const SECRET_AUTH = 'NMWk70BR+6zuyw3NWi8uijU2jdACuEsA+kjvTaI0TXgx1e7o95cSyP1jKcKsHex5';
 
 export {
   FIREBASE_CONFIG,
@@ -29,5 +32,6 @@ export {
   ERROR_CODE,
   REDUX,
   MENU,
-  SECRET_AUTH
+  SECRET_AUTH,
+  RESPONSE_CODE
 };
