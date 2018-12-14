@@ -24,8 +24,8 @@ class Museum extends Component {
         <Avatar shape="square" size={150} src={MeseumImage} className="avatar-logo" />
         <article>
           <p>
-            <span>M</span>useum adalah institusi permanen, nirlaba, melayani kebutuhan publik, dengan sifat
-            terbuka, dengan cara melakukan usaha pengoleksian, mengkonservasi, meriset,
+            <span>M</span>useum adalah institusi permanen, nirlaba, melayani kebutuhan publik,
+            dengan sifat terbuka, dengan cara melakukan usaha pengoleksian, mengkonservasi, meriset,
             mengomunikasikan, dan memamerkan benda nyata kepada masyarakat untuk kebutuhan studi,
             pendidikan, dan kesenangan. Karena itu ia bisa menjadi bahan studi oleh kalangan
             akademis, dokumentasi kekhasan masyarakat tertentu, ataupun dokumentasi dan pemikiran
