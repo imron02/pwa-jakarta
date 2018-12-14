@@ -3,7 +3,8 @@ import { REDUX } from '../../utils/constants';
 const initialState = {
   status: '',
   count: 0,
-  data: []
+  data: [],
+  error: ''
 };
 
 const museum = (state = initialState, action) => {
@@ -11,7 +12,8 @@ const museum = (state = initialState, action) => {
     case REDUX.REQUEST_MUSEUM:
       return {
         ...state,
-        status: REDUX.REQUEST_MUSEUM
+        status: REDUX.REQUEST_MUSEUM,
+        error: ''
       };
     case REDUX.REQUEST_MUSEUM_SUCCESS:
       return {
@@ -23,7 +25,8 @@ const museum = (state = initialState, action) => {
     case REDUX.REQUEST_MUSEUM_FAILED:
       return {
         ...initialState,
-        status: REDUX.REQUEST_MUSEUM_FAILED
+        status: REDUX.REQUEST_MUSEUM_FAILED,
+        error: action.error
       };
     default:
       return initialState;
