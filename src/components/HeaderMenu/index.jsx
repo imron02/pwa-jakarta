@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Avatar } from 'antd';
 import { Redirect } from 'react-router-dom';
 
 import userImage from '../../assets/images/user.png';
@@ -16,9 +16,7 @@ class HeaderMenu extends Component {
   }
 
   renderSubMenu = () => (
-    <div className="submenu-title-wrapper">
-      <img src={userImage} alt="user menu" className="logo-user-submenu" />
-    </div>
+    <Avatar icon="user" className="avatar-user" />
   );
 
   onLogout = (e) => {
@@ -40,19 +38,21 @@ class HeaderMenu extends Component {
 
     return (
       <Header className="header">
-        <div className="logo">
-          <img src={logo} alt="logo-jakarta" />
+        <div className="header-wrapper">
+          <div className="logo">
+            <img src={logo} alt="logo-jakarta" />
+          </div>
+          <Menu
+            mode="horizontal"
+            theme="light"
+            className="header-menu"
+            onClick={this.onLogout}
+          >
+            <SubMenu title={this.renderSubMenu()}>
+              <Menu.Item key="1">Log out</Menu.Item>
+            </SubMenu>
+          </Menu>
         </div>
-        <Menu
-          mode="horizontal"
-          theme="dark"
-          className="header-menu"
-          onClick={this.onLogout}
-        >
-          <SubMenu title={this.renderSubMenu()}>
-            <Menu.Item key="1">Log out</Menu.Item>
-          </SubMenu>
-        </Menu>
       </Header>
     );
   }
