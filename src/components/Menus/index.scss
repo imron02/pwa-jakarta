@@ -2,4 +2,12 @@
 
 .sider-container {
   background-color: $white-color;
+  border: 1px solid $mercury-color;
+  border-radius: 4px;
+  max-height: 250px;
+
+  .menu {
+    font-size: 12px;
+    font-weight: 600;
+  }
 }

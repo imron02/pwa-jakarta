@@ -51,7 +51,6 @@ class Menus extends Component {
 
     return (
       <Sider
-        collapsible
         collapsed={collapsed}
         onCollapse={this.toggle}
         className="sider-container"
@@ -60,6 +59,7 @@ class Menus extends Component {
           mode="inline"
           defaultSelectedKeys={[pathname]}
           onClick={this.onClick}
+          className="menu"
         >
           <Menu.Item key={MENU.DASHBOARD}>
             <Icon type="desktop" />
@@ -68,10 +68,6 @@ class Menus extends Component {
           <Menu.Item key={MENU.MUSEUM}>
             <Icon type="home" />
             <span>Museum</span>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Icon type="upload" />
-            <span>nav 3</span>
           </Menu.Item>
         </Menu>
       </Sider>
