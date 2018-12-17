@@ -17,7 +17,7 @@ class BaseContainer extends Component {
     return (
       <Layout>
         <HeaderMnu />
-        <Layout>
+        <Layout className="section">
           <Menus {...this.props} />
           <Layout className="base-container">
             <Content className="content-layout">

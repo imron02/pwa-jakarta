@@ -1,13 +1,22 @@
 @import '../utils/color.scss';
 
+.section {
+  padding-top: 150px;
+  max-width: 1010px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .base-container {
   padding: 0 24px 24px;
 
   .content-layout {
-    margin: 24px 16px;
+    margin: 0px 16px;
     padding: 24px;
     background-color: $white-color;
     min-height: 280;
+    border: 1px solid $mercury-color;
+    border-radius: 4px;
   }
 
   .avatar-logo {
