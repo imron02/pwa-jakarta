@@ -3,58 +3,67 @@ import {
   Form,
   Icon,
   Input,
-  Button,
-  notification
+  Button
 } from 'antd';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 
-import { firebase } from '../../utils/firebase';
-import { ERROR_CODE } from '../../utils/constants';
 import './index.scss';
+import { REDUX } from '../../utils/constants';
 
 const FormItem = Form.Item;
 
-class NormalLoginForm extends React.Component {
+class LoginForm extends React.Component {
   state = {
-    onSubmit: false,
-    isLoggedIn: false
+    onSubmit: false
   };
 
+  static defaultProps = {
+    isLoggedIn: false
+  }
+
+  static getDerivedStateFromProps(props) {
+    const { actionStatus } = props;
+
+    if (!isEmpty(props.user)) {
+      return {
+        onSubmit: true
+      };
+    }
+
+    if (actionStatus === REDUX.REQUEST_LOGIN_FAILED) {
+      return {
+        onSubmit: false
+      };
+    }
+
+    return null;
+  }
+
   onSubmit = (e) => {
-    const { form } = this.props;
+    const { form, login } = this.props;
     e.preventDefault();
 
     this.setState({ onSubmit: true });
     form.validateFieldsAndScroll(async (formError, { email, password }) => {
       if (!formError) {
         try {
-          const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
-          this.setState({ onSubmit: false });
-          if (user.emailVerified) {
-            this.setState({ isLoggedIn: true });
-          } else {
-            notification.warning({
-              message: 'Warning!',
-              description: 'Silahkan cek E-mail dan verifikasi akun kamu'
-            });
-          }
-        } catch ({ code, message }) {
-          if (code === ERROR_CODE['auth/user-not-found']) {
-            notification.warning({
-              message: 'Warning!',
-              description: 'Pengguna tidak ditemukan, mohon periksa E-mail kamu'
-            });
-          }
+          login({ email, password });
+        } catch (error) {
+          // Error
           this.setState({ onSubmit: false });
         }
+      } else {
+        // Form Error
+        this.setState({ onSubmit: false });
       }
     });
   }
 
   render() {
-    const { form: { getFieldDecorator } } = this.props;
-    const { onSubmit, isLoggedIn } = this.state;
+    const { form: { getFieldDecorator }, isLoggedIn } = this.props;
+    const { onSubmit } = this.state;
 
     if (isLoggedIn) {
       return <Redirect to="/dashboard" />;
@@ -117,8 +126,10 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-NormalLoginForm.propTypes = {
-  form: PropTypes.objectOf(PropTypes.func).isRequired
+LoginForm.propTypes = {
+  form: PropTypes.objectOf(PropTypes.func).isRequired,
+  login: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool
 };
 
-export default Form.create()(NormalLoginForm);
+export default Form.create()(LoginForm);

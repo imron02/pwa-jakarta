@@ -11,7 +11,7 @@ import 'antd/dist/antd.css';
 import { firebase } from './utils/firebase';
 import { MENU } from './utils/constants';
 import store from './utils/store';
-import NormalLoginForm from './containers/Login';
+import LoginForm from './containers/Login/container';
 import RegisterForm from './containers/Register';
 import Dashboard from './containers/Dashboard';
 import Museum from './containers/Museum/container';
@@ -82,8 +82,8 @@ class App extends React.Component {
         <Router>
           <div>
             <Switch>
-              <PublicRoute exact authed={isLoggedIn} path="/" component={NormalLoginForm} />
-              <PublicRoute authed={isLoggedIn} path={MENU.LOGIN} component={NormalLoginForm} />
+              <PublicRoute exact authed={isLoggedIn} path="/" component={LoginForm} />
+              <PublicRoute authed={isLoggedIn} path={MENU.LOGIN} component={LoginForm} />
               <PublicRoute authed={isLoggedIn} path={MENU.REGISTER} component={RegisterForm} />
               <PrivateRoute authed={isLoggedIn} path={MENU.DASHBOARD} component={Dashboard} />
               <PrivateRoute authed={isLoggedIn} path={MENU.MUSEUM} component={Museum} />

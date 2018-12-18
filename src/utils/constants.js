@@ -9,12 +9,16 @@ const FIREBASE_CONFIG = {
 const SECRET_KEY = 'pw4-j4k4rt4-s3cr3t';
 const SECRET_AUTH = 'NMWk70BR+6zuyw3NWi8uijU2jdACuEsA+kjvTaI0TXgx1e7o95cSyP1jKcKsHex5';
 const ERROR_CODE = {
-  'auth/user-not-found': 'auth/user-not-found'
+  'auth/user-not-found': 'auth/user-not-found',
+  'auth/wrong-password': 'auth/wrong-password'
 };
 const RESPONSE_CODE = {
   success: 'success'
 };
 const REDUX = {
+  REQUEST_LOGIN: 'REQUEST_LOGIN',
+  REQUEST_LOGIN_SUCCESS: 'REQUEST_LOGIN_SUCCESS',
+  REQUEST_LOGIN_FAILED: 'REQUEST_LOGIN_FAILED',
   REQUEST_MUSEUM: 'REQUEST_MUSEUM',
   REQUEST_MUSEUM_SUCCESS: 'REQUEST_MUSEUM_SUCCESS',
   REQUEST_MUSEUM_FAILED: 'REQUEST_MUSEUM_FAILED'
