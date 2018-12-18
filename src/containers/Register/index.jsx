@@ -36,7 +36,7 @@ class RegisterForm extends React.Component {
           const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
           await response.user.sendEmailVerification();
 
-          this.insertData(FORMAT_USER_DATA(values));
+          this.insertData(response.user.uid, FORMAT_USER_DATA(values));
         } catch (error) {
           const { code, message } = error;
 
@@ -52,11 +52,11 @@ class RegisterForm extends React.Component {
     });
   }
 
-  insertData = async (data) => {
+  insertData = async (uid, data) => {
     const { history } = this.props;
 
     try {
-      await db.collection('users').add(data);
+      await db.collection('users').doc(uid).set(data);
 
       this.setState({ onSubmit: false });
       notification.success({

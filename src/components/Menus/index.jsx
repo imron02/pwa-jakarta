@@ -1,26 +1,53 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import {
+  Layout,
+  Menu,
+  Icon,
+  Avatar
+} from 'antd';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 import { MENU } from '../../utils/constants';
+import { firebase, db } from '../../utils/firebase';
 import './index.scss';
 
 const { Sider } = Layout;
 
 class Menus extends Component {
   state = {
-    collapsed: false
+    collapsed: false,
+    user: {}
   };
 
-  shouldComponentUpdate(nextProps) {
-    const { history } = this.props;
+  componentDidMount() {
+    this.getUserData();
+  }
 
-    if (history === nextProps.history) {
-      return false;
+  shouldComponentUpdate(nextProps, nextState) {
+    const { history } = this.props;
+    const { user } = this.state;
+
+    if (user !== nextState.user) {
+      return true;
     }
 
-    return true;
+    if (history !== nextProps.history) {
+      return true;
+    }
+
+    return false;
+  }
+
+  getUserData = async () => {
+    try {
+      const { uid } = firebase.auth().currentUser;
+      const user = await db.collection('users').doc(uid).get();
+
+      this.setState({ user: user.data() });
+    } catch (error) {
+      // Error
+    }
   }
 
   toggle = () => {
@@ -46,31 +73,37 @@ class Menus extends Component {
   }
 
   render() {
-    const { collapsed } = this.state;
+    const { collapsed, user } = this.state;
     const pathname = get(this.props, 'history.location.pathname', MENU.DASHBOARD);
 
     return (
-      <Sider
-        collapsed={collapsed}
-        onCollapse={this.toggle}
-        className="sider-container"
-      >
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={[pathname]}
-          onClick={this.onClick}
-          className="menu"
+      <div>
+        <div className="avatar-left">
+          <Avatar icon="user" size={50} className="avatar-user" />
+          <span>{user.fullname}</span>
+        </div>
+        <Sider
+          collapsed={collapsed}
+          onCollapse={this.toggle}
+          className="sider-container"
         >
-          <Menu.Item key={MENU.DASHBOARD}>
-            <Icon type="desktop" />
-            <span>Dashboard</span>
-          </Menu.Item>
-          <Menu.Item key={MENU.MUSEUM}>
-            <Icon type="home" />
-            <span>Museum</span>
-          </Menu.Item>
-        </Menu>
-      </Sider>
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={[pathname]}
+            onClick={this.onClick}
+            className="menu"
+          >
+            <Menu.Item key={MENU.DASHBOARD}>
+              <Icon type="desktop" />
+              <span>Dashboard</span>
+            </Menu.Item>
+            <Menu.Item key={MENU.MUSEUM}>
+              <Icon type="home" />
+              <span>Museum</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+      </div>
     );
   }
 }

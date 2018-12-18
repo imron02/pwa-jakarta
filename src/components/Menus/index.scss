@@ -1,5 +1,19 @@
 @import '../../utils/color';
 
+.avatar-left {
+  height: 62px;
+
+  .avatar-user {
+    margin-right: 10px;
+  }
+
+  span {
+    font-size: 14px;
+    color: $black-color;
+    font-weight: 600;
+  }
+}
+
 .sider-container {
   background-color: $white-color;
   border: 1px solid $mercury-color;
